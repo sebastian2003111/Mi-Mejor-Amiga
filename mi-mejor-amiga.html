@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Ti ✨</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #fdf6ec;
+    --blush: #f2c4b0;
+    --rose: #c96b6b;
+    --wine: #7a2d3b;
+    --gold: #c9a84c;
+    --dark: #1a0a10;
+    --soft: #f7e9e9;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--dark);
+    font-family: 'Cormorant Garamond', serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    position: fixed;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--rose);
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: multiply;
+    transition: transform 0.15s ease;
+    transform: translate(-50%, -50%);
+  }
+  .cursor-trail {
+    position: fixed;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    pointer-events: none;
+    z-index: 9998;
+    opacity: 0.6;
+    transition: transform 0.35s ease, opacity 0.35s;
+    transform: translate(-50%, -50%);
+  }
+
+  /* ---- HERO ---- */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    position: relative;
+    overflow: hidden;
+    background: var(--dark);
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 50%, #7a2d3b55 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 80% 30%, #c9a84c22 0%, transparent 60%),
+      radial-gradient(ellipse 100% 100% at 50% 100%, #c96b6b22 0%, transparent 70%);
+    animation: bgPulse 8s ease-in-out infinite alternate;
+  }
+
+  @keyframes bgPulse {
+    0% { opacity: 0.7; }
+    100% { opacity: 1; }
+  }
+
+  .noise {
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.06'/%3E%3C/svg%3E");
+    opacity: 0.4; pointer-events: none;
+  }
+
+  .petals-container {
+    position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+  }
+
+  .petal {
+    position: absolute;
+    width: 8px; height: 14px;
+    border-radius: 50% 0 50% 0;
+    background: linear-gradient(135deg, var(--blush), var(--rose));
+    opacity: 0;
+    animation: petalFall linear infinite;
+  }
+
+  @keyframes petalFall {
+    0%   { transform: translateY(-20px) rotate(0deg) translateX(0); opacity: 0; }
+    10%  { opacity: 0.7; }
+    90%  { opacity: 0.4; }
+    100% { transform: translateY(105vh) rotate(720deg) translateX(60px); opacity: 0; }
+  }
+
+  .hero-content {
+    position: relative; z-index: 2;
+    text-align: center;
+    padding: 2rem;
+    animation: fadeUp 1.2s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
+    letter-spacing: 0.5em;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    animation: fadeUp 1.2s 0.2s ease both;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.5rem, 12vw, 9rem);
+    font-weight: 700;
+    line-height: 0.9;
+    color: var(--cream);
+    margin-bottom: 1rem;
+    animation: fadeUp 1.2s 0.4s ease both;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--blush);
+    display: block;
+  }
+
+  .hero-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    font-style: italic;
+    color: #ffffff88;
+    margin-top: 1.5rem;
+    animation: fadeUp 1.2s 0.6s ease both;
+  }
+
+  .scroll-hint {
+    position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    color: #ffffff44;
+    font-size: 0.8rem; letter-spacing: 0.3em;
+    animation: bounce 2s ease-in-out infinite, fadeUp 1.2s 1.2s ease both;
+    font-family: 'Bebas Neue', sans-serif;
+  }
+
+  .scroll-hint::after {
+    content: '';
+    width: 1px; height: 50px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: grow 2s ease-in-out infinite;
+  }
+
+  @keyframes bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(8px); } }
+  @keyframes grow { 0%, 100% { transform: scaleY(0.5); opacity: 0.4; } 50% { transform: scaleY(1); opacity: 1; } }
+
+  /* ---- GALLERY SECTION ---- */
+  .section {
+    padding: clamp(4rem, 10vw, 8rem) clamp(1.5rem, 5vw, 4rem);
+  }
+
+  .section-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.5em;
+    color: var(--rose);
+    margin-bottom: 0.5rem;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 6vw, 4rem);
+    color: var(--wine);
+    line-height: 1.1;
+    margin-bottom: 3rem;
+  }
+
+  /* Masonry-style gallery */
+  .gallery {
+    columns: 3;
+    column-gap: 1rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 768px) { .gallery { columns: 2; } }
+  @media (max-width: 480px) { .gallery { columns: 1; } }
+
+  .photo-slot {
+    break-inside: avoid;
+    margin-bottom: 1rem;
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+    cursor: pointer;
+    animation: fadeIn 0.8s ease both;
+  }
+
+  .photo-slot:nth-child(1) { animation-delay: 0.1s; }
+  .photo-slot:nth-child(2) { animation-delay: 0.2s; }
+  .photo-slot:nth-child(3) { animation-delay: 0.3s; }
+  .photo-slot:nth-child(4) { animation-delay: 0.4s; }
+  .photo-slot:nth-child(5) { animation-delay: 0.5s; }
+  .photo-slot:nth-child(6) { animation-delay: 0.6s; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+  .photo-inner {
+    width: 100%;
+    aspect-ratio: auto;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    background: linear-gradient(135deg, var(--blush) 0%, var(--soft) 100%);
+  }
+
+  .photo-slot img {
+    width: 100%;
+    display: block;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .photo-slot:hover img,
+  .photo-slot:hover .photo-placeholder { transform: scale(1.05); }
+
+  /* Placeholder (before adding photos) */
+  .photo-placeholder {
+    width: 100%;
+    min-height: 220px;
+    background: linear-gradient(135deg, #f2c4b022 0%, #c96b6b11 100%);
+    border: 2px dashed var(--blush);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 0.75rem;
+    color: var(--rose);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    border-radius: 4px;
+  }
+
+  .photo-placeholder .icon { font-size: 2rem; opacity: 0.5; }
+  .photo-placeholder span { opacity: 0.6; font-size: 0.9rem; }
+
+  .photo-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, #7a2d3bcc 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    display: flex; align-items: flex-end;
+    padding: 1.2rem;
+  }
+
+  .photo-slot:hover .photo-overlay { opacity: 1; }
+
+  .photo-caption {
+    color: var(--cream);
+    font-style: italic;
+    font-size: 1rem;
+  }
+
+  /* ---- QUOTE STRIP ---- */
+  .quote-strip {
+    background: var(--wine);
+    padding: 5rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .quote-strip::before {
+    content: '"';
+    position: absolute;
+    top: -2rem; left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Playfair Display', serif;
+    font-size: 20rem;
+    color: #ffffff08;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .quote-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 4vw, 2.8rem);
+    font-style: italic;
+    color: var(--cream);
+    max-width: 800px;
+    margin: 0 auto 1.5rem;
+    line-height: 1.4;
+    position: relative; z-index: 1;
+  }
+
+  .quote-author {
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    font-size: 0.9rem;
+  }
+
+  /* ---- REASONS SECTION ---- */
+  .reasons-section {
+    background: var(--dark);
+    padding: clamp(4rem, 10vw, 8rem) clamp(1.5rem, 5vw, 4rem);
+  }
+
+  .reasons-section .section-title {
+    color: var(--cream);
+  }
+
+  .reasons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .reason-card {
+    border: 1px solid #c9a84c33;
+    padding: 2rem;
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+
+  .reason-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #c9a84c08, #c96b6b08);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .reason-card:hover { border-color: var(--gold); }
+  .reason-card:hover::before { opacity: 1; }
+
+  .reason-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem;
+    color: #c9a84c22;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .reason-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    color: #fdf6eccc;
+    font-style: italic;
+    line-height: 1.6;
+  }
+
+  /* ---- FINAL LETTER ---- */
+  .letter-section {
+    background: var(--soft);
+    padding: clamp(5rem, 12vw, 10rem) clamp(1.5rem, 5vw, 4rem);
+    text-align: center;
+  }
+
+  .letter-paper {
+    max-width: 680px;
+    margin: 0 auto;
+    background: white;
+    padding: clamp(2.5rem, 6vw, 5rem);
+    box-shadow:
+      0 2px 4px #0000000a,
+      0 20px 60px #7a2d3b18,
+      0 0 0 1px #c9a84c22;
+    position: relative;
+    border-radius: 2px;
+  }
+
+  .letter-paper::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%; transform: translateX(-50%);
+    width: 80px; height: 3px;
+    background: linear-gradient(to right, var(--rose), var(--gold));
+  }
+
+  .letter-date {
+    font-family: 'Cormorant Garamond', serif;
+    color: #999;
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+    font-style: italic;
+  }
+
+  .letter-greeting {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    color: var(--wine);
+    margin-bottom: 1.5rem;
+    font-style: italic;
+  }
+
+  .letter-body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+    line-height: 1.9;
+    color: var(--dark);
+    text-align: left;
+    margin-bottom: 2rem;
+  }
+
+  .letter-sign {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.4rem;
+    color: var(--rose);
+    text-align: right;
+  }
+
+  /* ---- HEARTS ---- */
+  .hearts-container {
+    position: fixed; pointer-events: none; z-index: 9990;
+  }
+
+  .floating-heart {
+    position: fixed;
+    font-size: 1.2rem;
+    opacity: 0;
+    animation: heartFloat 1.5s ease-out forwards;
+    pointer-events: none;
+  }
+
+  @keyframes heartFloat {
+    0%   { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-80px) scale(0.5); }
+  }
+
+  /* ---- FOOTER ---- */
+  footer {
+    background: var(--dark);
+    text-align: center;
+    padding: 2rem;
+    color: #ffffff33;
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+    font-family: 'Bebas Neue', sans-serif;
+  }
+
+  footer span { color: var(--rose); }
+
+  /* Lightbox */
+  .lightbox {
+    position: fixed; inset: 0;
+    background: #000000ee;
+    z-index: 10000;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s;
+  }
+
+  .lightbox.open { opacity: 1; pointer-events: all; }
+
+  .lightbox img {
+    max-width: 90vw; max-height: 90vh;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 0 80px #00000088;
+  }
+
+  .lightbox-close {
+    position: absolute; top: 1.5rem; right: 1.5rem;
+    color: white; font-size: 2rem; cursor: pointer;
+    background: none; border: none;
+    line-height: 1;
+    transition: transform 0.2s;
+  }
+  .lightbox-close:hover { transform: rotate(90deg); }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-trail" id="cursorTrail"></div>
+<div class="lightbox" id="lightbox"><button class="lightbox-close" onclick="closeLightbox()">✕</button><img id="lightboxImg" src="" alt=""></div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="noise"></div>
+  <div class="petals-container" id="petals"></div>
+
+  <div class="hero-content">
+    <p class="hero-label">✦ Un pequeño homenaje ✦</p>
+    <h1 class="hero-title">
+      Para ti,
+      <em>mi mejor amiga</em>
+    </h1>
+    <p class="hero-subtitle">Porque el mundo es mejor contigo en él.</p>
+  </div>
+
+  <div class="scroll-hint">Scroll</div>
+</section>
+
+<!-- GALLERY -->
+<section class="section">
+  <p class="section-label">✦ Momentos</p>
+  <h2 class="section-title">Nuestras fotos<br><em style="font-style:italic; color:var(--blush)">favoritas</em></h2>
+
+  <div class="gallery" id="gallery">
+
+    <!-- FOTO 1: Reemplaza src="" con la URL o ruta de la foto -->
+    <div class="photo-slot" onclick="openLightbox(this)">
+      
+       <img src="/img/foto1.jpg" alt="Momento especial">
+      <div class="photo-overlay"><p class="photo-caption">Un Arte ✨</p></div>
+    </div>
+
+    <div class="photo-slot" onclick="openLightbox(this)">
+     
+       <img src="/img/foto2.jpg" alt="Juntas">
+      <div class="photo-overlay"><p class="photo-caption">Tierna 🌺</p></div>
+    </div>
+
+    <div class="photo-slot" onclick="openLightbox(this)">
+      
+       <img src="/img/foto6.jpg" alt="Momento especial">
+      <div class="photo-overlay"><p class="photo-caption">Recuerdos para siempre 💫</p></div>
+    </div>
+
+    <div class="photo-slot" onclick="openLightbox(this)">
+       <img src="/img/foto4.jpg" alt="">
+      <div class="photo-overlay"><p class="photo-caption">Modelo 🌹</p></div>
+    </div>
+
+    <div class="photo-slot" onclick="openLightbox(this)">
+       <img src="/img/foto8.jpeg" alt=""> 
+      <div class="photo-overlay"><p class="photo-caption">Momentos de oro 💐</p></div>
+    </div>
+
+    <div class="photo-slot" onclick="openLightbox(this)">
+
+      <img src="/img/Foto7.jpg" alt="">
+      <div class="photo-overlay"><p class="photo-caption">Mi persona favorita ✨</p></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- QUOTE -->
+<section class="quote-strip">
+  <p class="quote-text">
+    "La amistad es el único cemento que mantendrá unido al mundo."
+  </p>
+  <p class="quote-author">— Woodrow Wilson</p>
+</section>
+
+<!-- REASONS -->
+<section class="reasons-section">
+  <p class="section-label" style="color:var(--gold)">✦ Por qué eres especial</p>
+  <h2 class="section-title">Razones por las que<br><em style="font-style:italic; color:var(--blush)">te quiero tanto</em></h2>
+
+  <div class="reasons-grid">
+    <div class="reason-card">
+      <div class="reason-number">01</div>
+      <p class="reason-text">Porque siempre estás ahí, sin importar la hora ni la distancia.</p>
+    </div>
+    <div class="reason-card">
+      <div class="reason-number">02</div>
+      <p class="reason-text">Porque me haces reír como nadie más puede hacerlo.</p>
+    </div>
+    <div class="reason-card">
+      <div class="reason-number">03</div>
+      <p class="reason-text">Porque me conoces mejor que yo mismo, y aun así me quieres.</p>
+    </div>
+    <div class="reason-card">
+      <div class="reason-number">04</div>
+      <p class="reason-text">Porque contigo todo es una aventura, hasta las cosas más simples.</p>
+    </div>
+    <div class="reason-card">
+      <div class="reason-number">05</div>
+      <p class="reason-text">Porque eres la persona que más ha creído en mí.</p>
+    </div>
+    <div class="reason-card">
+      <div class="reason-number">06</div>
+      <p class="reason-text">Porque el mundo es infinitamente mejor con tu presencia en él.</p>
+    </div>
+  </div>
+</section>
+
+<!-- LETTER -->
+<section class="letter-section">
+  <div class="letter-paper">
+    <p class="letter-date" id="letterDate"></p>
+    <p class="letter-greeting">Mi querida amiga,</p>
+    <div class="letter-body">
+      <p>Hay personas que entran en tu vida y la transforman para siempre. Tú eres una de esas personas — de las que dejan huella, de las que hacen que cada día valga la pena.</p>
+      <br>
+      <p>Gracias por cada risa compartida, por cada abrazo a tiempo, por cada momento en que me hiciste sentir que no estaba solo. Gracias por ser exactamente quien eres. TE ADMIRO DE MASIADO!!</p>
+      <br>
+      <p>Esta página es solo una pequeña muestra de lo mucho que significas para mí. No hay palabras suficientes, pero espero que cada foto, cada línea aquí escrita, te recuerde lo especial que eres.</p>
+      <br>
+      <p>Y bueno te vas, te alejas... Wuao mucha distancia!!, aunque habra comunicacion constante entre nosotros... De igual forma me entristece un poco, no hubo tiempo suficiente para estar contigo y pasar tiempo juntos Mi Niña Chiquita (jejeje🤭😅)...NA' disculpa quiero decir Mi Mejor Amiga.</p>
+      <br>
+      <p>Sé que va volver... Y para entonces sacare mucho tiempo para pasar con vos.</p>
+      <br>
+      <p>Con todo el cariño del mundo,</p>
+    </div>
+    <p class="letter-sign">Tu mejor amigo 🌹</p>
+  </div>
+</section>
+
+<footer>
+  Hecho con <span>♥</span> especialmente para ti &nbsp;✦&nbsp; 2026
+  <p>Ingeniero en Sistemas - Sebastian Bohorquez</p>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const trail = document.getElementById('cursorTrail');
+  let mx = 0, my = 0, tx = 0, ty = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+  });
+
+  setInterval(() => {
+    tx += (mx - tx) * 0.15;
+    ty += (my - ty) * 0.15;
+    trail.style.left = tx + 'px';
+    trail.style.top = ty + 'px';
+  }, 16);
+
+  // Floating hearts on click
+  document.addEventListener('click', e => {
+    for (let i = 0; i < 5; i++) {
+      const h = document.createElement('div');
+      h.className = 'floating-heart';
+      h.textContent = ['💕','🌸','✨','💖','🌺','💗'][Math.floor(Math.random()*6)];
+      h.style.left = (e.clientX + (Math.random()-0.5)*60) + 'px';
+      h.style.top = e.clientY + 'px';
+      h.style.animationDelay = (Math.random()*0.3) + 's';
+      document.body.appendChild(h);
+      setTimeout(() => h.remove(), 1800);
+    }
+  });
+
+  // Falling petals
+  const petalContainer = document.getElementById('petals');
+  function createPetal() {
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.style.left = Math.random()*100 + 'vw';
+    p.style.animationDuration = (6 + Math.random()*8) + 's';
+    p.style.animationDelay = (Math.random()*5) + 's';
+    p.style.width = (6 + Math.random()*8) + 'px';
+    p.style.height = (10 + Math.random()*12) + 'px';
+    p.style.transform = `rotate(${Math.random()*360}deg)`;
+    petalContainer.appendChild(p);
+    setTimeout(() => p.remove(), 14000);
+  }
+  setInterval(createPetal, 400);
+  for(let i=0;i<8;i++) setTimeout(createPetal, i*200);
+
+  // Letter date
+  const d = new Date();
+  document.getElementById('letterDate').textContent =
+    d.toLocaleDateString('es-CO', { year:'numeric', month:'long', day:'numeric' });
+
+  // Lightbox
+  function openLightbox(slot) {
+    const img = slot.querySelector('img');
+    if (!img) return;
+    document.getElementById('lightboxImg').src = img.src;
+    document.getElementById('lightbox').classList.add('open');
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+  }
+  document.getElementById('lightbox').addEventListener('click', function(e) {
+    if (e.target === this) closeLightbox();
+  });
+
+  // Intersection observer for animations
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.style.animationPlayState = 'running'; });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.photo-slot, .reason-card').forEach(el => {
+    el.style.animationPlayState = 'paused';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
